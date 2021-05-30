@@ -18,12 +18,16 @@ namespace WebApplication1.Bll
 
         }
 
-        public bool WriteOperationLog(mh_modify_log Log, List<mh_modify_info> Infos)
+        public async Task<bool> WriteOperationLog(mh_modify_log Log, List<mh_modify_info> Infos)
         {
             try
             {
-                _repository.Insert<mh_modify_log>(Log);
-                _repository.Insert<mh_modify_info>(Infos);
+                await Task.Run(() =>
+                 {
+                     _repository.Insert<mh_modify_log>(Log);
+                     _repository.Insert<mh_modify_info>(Infos);
+                 });
+
 
                 return true;
             }

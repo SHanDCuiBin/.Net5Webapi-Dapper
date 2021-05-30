@@ -17,6 +17,6 @@ namespace WebApplication1.IBll
         /// <param name="Log"></param>
         /// <param name="Infos"></param>
         /// <returns></returns>
-      bool WriteOperationLog(mh_modify_log Log, List<mh_modify_info> Infos);
+        Task<bool> WriteOperationLog(mh_modify_log Log, List<mh_modify_info> Infos);
     }
 }

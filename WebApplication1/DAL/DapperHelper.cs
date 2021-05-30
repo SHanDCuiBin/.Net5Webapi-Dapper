@@ -145,6 +145,8 @@ namespace WebApplication1.DAL
         /// <returns></returns>
         public dynamic Insert<T>(T obj, IDbTransaction tran = null, int? commandTimeout = null) where T : class
         {
+
+            LogHelper.Write("Insert",LogLev.Debug);
             return Connection.Insert(obj, tran, commandTimeout);
         }
 
@@ -157,6 +159,7 @@ namespace WebApplication1.DAL
         /// <param name="commandTimeout"></param>
         public void Insert<T>(IEnumerable<T> list, IDbTransaction tran = null, int? commandTimeout = null) where T : class
         {
+            LogHelper.Write("Insert<T>",LogLev.Debug);
             Connection.Insert(list, tran, commandTimeout);
         }
 
@@ -221,163 +224,7 @@ namespace WebApplication1.DAL
         }
         #endregion
 
-        #region 异步操作方法
-        /// <summary>
-        /// 删除实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
-        public async Task<bool> DeleteAsync<T>(T obj, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.DeleteAsync(obj, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 删除实体列表
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
-        public async Task<bool> DeleteAsync<T>(IEnumerable<T> list, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.DeleteAsync(list, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 获取单个对象 id
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
-        public async Task<T> GetAsync<T>(string id, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.GetAsync<T>(id, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 获取对象列表
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="predicate"></param>
-        /// <param name="sort"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="buffered"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync<T>(object predicate = null, IList<ISort> sort = null, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.GetListAsync<T>(predicate, sort, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="predicate"></param>
-        /// <param name="sort"></param>
-        /// <param name="page"></param>
-        /// <param name="pagesize"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="buffered"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<T>> GetPageAsync<T>(object predicate, IList<ISort> sort, int page, int pagesize, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.GetPageAsync<T>(predicate, sort, page, pagesize, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 单实体插入
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <returns></returns>
-        public async Task<dynamic> InsertAsync<T>(T obj, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            return await Connection.Connection.InsertAsync(obj, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 列表插入
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        public void InsertAsync<T>(IEnumerable<T> list, IDbTransaction tran = null, int? commandTimeout = null) where T : class
-        {
-            Connection.Connection.InsertAsync(list, tran, commandTimeout);
-        }
-
-        /// <summary>
-        /// 实体更新
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="ignoreAllKeyProperties"></param>
-        /// <returns></returns>
-        public async Task<bool> UpdateAsync<T>(T obj, IDbTransaction tran = null, int? commandTimeout = null, bool ignoreAllKeyProperties = true) where T : class
-        {
-            return await Connection.Connection.UpdateAsync(obj, tran, commandTimeout, ignoreAllKeyProperties);
-        }
-
-        /// <summary>
-        /// 实体集合更新
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        /// <param name="tran"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="ignoreAllKeyProperties"></param>
-        /// <returns></returns>
-        public async Task<bool> UpdateAsync<T>(IEnumerable<T> list, IDbTransaction tran = null, int? commandTimeout = null, bool ignoreAllKeyProperties = true) where T : class
-        {
-            return await Connection.Connection.UpdateAsync(list, tran, commandTimeout, ignoreAllKeyProperties);
-        }
-
-        /// <summary>
-        /// 自定义SQL语句查询
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="param"></param>
-        /// <param name="transaction"></param>
-        /// <param name="buffered"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="commandType"></param>
-        /// <returns></returns>
-        public async Task<List<T>> QueryAsync<T>(string sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            return (List<T>)await Connection.Connection.QueryAsync<T>(sql, param, transaction, commandTimeout, commandType);
-        }
-
-        /// <summary>
-        /// 执行SQL 实现“增”“删”“改”
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="param"></param>
-        /// <param name="transaction"></param>
-        /// <param name="buffered"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="commandType"></param>
-        /// <returns></returns>
-        public async Task<int> ExecuteAsync<T>(string sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            return await Connection.Connection.ExecuteAsync(sql, param, transaction, commandTimeout, commandType);
-        }
-        #endregion
+       
 
         public void Dispose()
         {

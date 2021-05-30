@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public bool Test(int sum, string name, string mk_type)
+        public Task<bool>  Test(int sum, string name, string mk_type)
         {
             mh_modify_log log = new mh_modify_log();
             log.id = Guid.NewGuid().ToString();
